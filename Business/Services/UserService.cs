@@ -1,56 +1,55 @@
 ﻿using Business.Interfaces;
 using Business.Models;
 
-namespace Business.Services
+namespace Business.Services;
+
+public class UserService : IUserService
 {
-    public class UserService : IUserService
+    // Create and new empty UsersBase list.
+    public List<UserBase> Users = new();
+
+    //public UserService()
+    //{
+    //    Users = GetAllUsers();
+    //}
+
+    // Add user
+    public void AddUser(UserBase user)
     {
-        public List<UserBase> Users = new();
+        // Adds incoming user to Users list
+        Users.Add(user);
+    }
 
-        public UserService()
+    // Get user by ID
+    public UserBase GetUserById(int id)
+    {
+        try
         {
-            Users = GetAllUsers();
+            // Return the user with index as UserBase
+            return Users[id];
         }
+        catch (Exception ex) {
+            Console.WriteLine($"Error while getting user: {ex.Message}");
+            // Returns null value if something goes wrong.
+            return null! ;
+        }
+    }
 
-        // Lägger till en användare
-        public void AddUser(UserBase user)
-        {
-            Users.Add(user);
-        }
+    // Get all users
+    public List<UserBase> GetAllUsers()
+    {
+        // Return all users from Users list as an UserBase list
+        return Users ;
+    }
 
-        // Hämtar användare baserat på ID
-        // Returnerar användaren med matchande ID eller kastar ett undantag om användaren inte finns.
-        public UserBase GetUserById(int id)
-        {
-            try
-            {
-                return Users[id];
-            }
-            catch (Exception ex) {
-                Console.WriteLine($"Error while getting user: {ex.Message}");
-                // Returns an empty regular user if something goes wrong.
-                return null! ;
-            }
+    // Get current user count
+    public int GetUserCount()
+    {
+        // if Users is empty we return 0 as int
+        if (Users == null) { 
+            return 0 ;
         }
-
-        // Hämta alla användare
-        // Returnerar alla användare.
-        public List<UserBase> GetAllUsers()
-        {
-            return Users ;
-        }
-
-
-        public int GetUserCount()
-        {
-            if (Users == null) { 
-                return 0 ;
-            }
-            return Users.Count;
-        }
-        public void KillAllUsers()
-        {
-            Users.Clear();
-        }
+        // return user count as int
+        return Users.Count;
     }
 }
